@@ -40,16 +40,24 @@ def brand_frame(frame, watermark_color='white', radius=35):
 
 
 # add white the ultralytics watermark to frame
-def _add_ultralytics_watermark(frame, watermark_color='white'):             
-        logo_resized, x_pos, y_pos, logo_width, logo_height = _get_logo_resized(frame)
-    
+def _add_ultralytics_watermark(frame, watermark_color='white'):
+    logo_resized, x_pos, y_pos, logo_width, logo_height = _get_logo_resized(frame, watermark_color)
+
+    # If logo has alpha channel, blend it properly
+    if logo_resized.shape[2] == 4:
+        alpha = logo_resized[:, :, 3] / 255.0
+        alpha = np.stack([alpha] * 3, axis=-1)
+        logo_bgr = logo_resized[:, :, :3]
+        
+        roi = frame[y_pos:y_pos + logo_height, x_pos:x_pos + logo_width]
+        blended = (logo_bgr * alpha + roi * (1 - alpha)).astype(np.uint8)
+        frame[y_pos:y_pos + logo_height, x_pos:x_pos + logo_width] = blended
+    else:
         overlay = frame.copy()
         overlay[y_pos:y_pos + logo_height, x_pos:x_pos + logo_width] = logo_resized
-        
-        alpha = 0.8
-        frame = cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0)
-        
-        return frame
+        frame = cv2.addWeighted(overlay, 0.8, frame, 0.2, 0)
+
+    return frame
     
 
 #  get the watermark resized 
