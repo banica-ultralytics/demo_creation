@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw
-from demo_creation.demo_creation.utils import get_font, get_color_pairs 
+from .utils import get_font, get_color_pairs
 
 label_padding = 6
 

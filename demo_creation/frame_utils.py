@@ -1,8 +1,7 @@
 import cv2
 import numpy as np
-
-from font_utils import draw_rounded_rectangle
-import demo_creation.demo_creation.utils as utils
+from .font_renderer import draw_rounded_rectangle
+from . import utils
 
 
 
