@@ -96,6 +96,10 @@ def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=10):
             cv2.ellipse(img, (x1 + radius, y2 - radius), (radius, radius), 90, 0, 90, color, thickness)
             cv2.ellipse(img, (x2 - radius, y2 - radius), (radius, radius), 0, 0, 90, color, thickness)
             
+        return img
+            
+        
+            
             
 
 # draw text and colored label 
@@ -129,6 +133,7 @@ def _draw_text_label(frame, text, position, font_size, box_color = None, text_co
         text_color,
         thickness
     )
+    return frame
     
     
 def draw_box_annotations(frame, boxes, labels, colors=None):
