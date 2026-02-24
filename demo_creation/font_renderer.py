@@ -23,7 +23,7 @@ def _get_text_size(text, font_size):
 
 
 
-def _draw_text(self, frame, text, position, font_size, color, thickness=1):
+def _draw_text(frame, text, position, font_size, color, thickness=1):
         """Draw text with Archivo font on OpenCV frame with improved spacing"""
         font = get_font(font_size)
         
