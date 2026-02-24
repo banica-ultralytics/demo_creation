@@ -162,14 +162,13 @@ def draw_box_annotations(frame, boxes, labels, colors=None):
             radius=10
         )
         frame = _draw_text_label(
-            frame,
-            label,
-            box_color,
-            text_color,
-            position=(x1, y1 + label_padding),
-            font_size=16,
-            padding=8
-        )
+                frame,
+                label,
+                position=(x1, y1 - 25),
+                font_size=16,
+                box_color=box_color,
+                text_color=text_color,
+            )
     return frame
 
 
