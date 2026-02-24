@@ -26,7 +26,7 @@ def _get_text_size(text, font_size, font_path):
 
 def _draw_text(self, frame, text, position, font_size, color, thickness=1):
         """Draw text with Archivo font on OpenCV frame with improved spacing"""
-        font = self.get_font(font_size)
+        font = get_font(font_size)
         
         # Convert OpenCV frame to PIL Image
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
