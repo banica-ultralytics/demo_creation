@@ -99,7 +99,7 @@ def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=10):
             
 
 # draw text and colored label 
-def _draw_text_label(frame, text, position, font_size, colors = None, thickness=1):
+def _draw_text_label(frame, text, position, font_size, box_color = None, text_color = None, thickness=1):
     font = get_font(font_size)
         
     frame_h, frame_w = frame.shape[:2]
@@ -116,6 +116,7 @@ def _draw_text_label(frame, text, position, font_size, colors = None, thickness=
         frame, 
         (x, y), 
         (x + label_w, y + label_h), 
+        box_color,
         thickness=-1,
         radius=5
     )
@@ -125,7 +126,7 @@ def _draw_text_label(frame, text, position, font_size, colors = None, thickness=
         text, 
         (x + label_padding, y + label_padding), 
         font_size, 
-        colors,
+        text_color,
         thickness
     )
     
