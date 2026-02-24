@@ -70,7 +70,7 @@ def _draw_text(self, frame, text, position, font_size, color, thickness=1):
     
     
     
-def _draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=10):
+def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=10):
         x1, y1 = pt1
         x2, y2 = pt2
         
@@ -112,7 +112,7 @@ def _draw_text_label(frame, text, position, font_size, colors = None, thickness=
     x = max(0, min(position[0], frame_w - label_w))
     y = max(0, min(position[1], frame_h - label_h))
         
-    frame = _draw_rounded_rectangle(
+    frame = draw_rounded_rectangle(
         frame, 
         (x, y), 
         (x + label_w, y + label_h), 
@@ -152,7 +152,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None):
             box_color = colors[0]
             text_color = colors[1]
 
-        frame = _draw_rounded_rectangle(
+        frame = draw_rounded_rectangle(
             frame,
             (x1, y1),
             (x2, y2),
