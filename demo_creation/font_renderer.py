@@ -5,17 +5,16 @@ from .utils import get_font, get_color_pairs
 
 label_padding = 6
 
-def _get_text_size(text, font_size, font_path):
+def _get_text_size(text, font_size):
     font = get_font(font_size)
-    # Calculate width with letter spacing
     total_width = 0
-    letter_spacing = max(1, int(font_size * 0.12))  # 12% of font size (1.5x bigger)
+    letter_spacing = max(1, int(font_size * 0.12))
     
     for i, char in enumerate(text):
         char_bbox = font.getbbox(char)
         char_width = char_bbox[2] - char_bbox[0]
         total_width += char_width
-        if i < len(text) - 1:  # exclude last char
+        if i < len(text) - 1:
             total_width += letter_spacing
     
     bbox = font.getbbox(text)
@@ -103,33 +102,28 @@ def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=10):
             
 
 # draw text and colored label 
-def _draw_text_label(frame, text, position, font_size, box_color = None, text_color = None, thickness=1):
-    font = get_font(font_size)
-        
+def _draw_text_label(frame, text, position, font_size, box_color=None, text_color=None, thickness=1, padding=8):
+    text_w, text_h = _get_text_size(text, font_size)
     frame_h, frame_w = frame.shape[:2]
-    text_w, text_h = _get_text_size(text, font_size, font)
-    
-    label_w = text_w + label_padding * 2
-    label_h = text_h + label_padding * 2
-    
-    # keep text label inside frame boundaries
+    label_w = text_w + padding * 2
+    label_h = text_h + padding * 2
+
     x = max(0, min(position[0], frame_w - label_w))
     y = max(0, min(position[1], frame_h - label_h))
-        
+
     frame = draw_rounded_rectangle(
-        frame, 
-        (x, y), 
-        (x + label_w, y + label_h), 
+        frame,
+        (x, y),
+        (x + label_w, y + label_h),
         box_color,
         thickness=-1,
         radius=5
     )
-    
     frame = _draw_text(
-        frame, 
-        text, 
-        (x + label_padding, y + label_padding), 
-        font_size, 
+        frame,
+        text,
+        (x + padding, y + padding),
+        font_size,
         text_color,
         thickness
     )
