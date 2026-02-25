@@ -24,6 +24,6 @@ def process_yolo_results_boundingbox(results):
     return {
             'boxes': boxes,
             'labels': labels,
-            'tracks': tracks
+            'track_ids': tracks
     }
 
