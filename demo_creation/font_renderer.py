@@ -96,7 +96,7 @@ def _draw_text_label(frame, text, track_id, position, font_size, box_color=None,
     
 
     x = max(0, min(position[0], frame_w - label_w))
-    y = max(0, min(position[1] - thickness, frame_h - label_h))
+    y = max(0, min(position[1] + thickness, frame_h - label_h))
 
     frame = draw_rounded_rectangle(
         frame,
