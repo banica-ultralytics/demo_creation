@@ -97,7 +97,7 @@ def _draw_text_label(frame, text, track_id, position, font_size, box_color=None,
     # Draw background rectangle — fills the full label area
     frame = draw_rounded_rectangle(
         frame,
-        (x - int(thickness/2), y),
+        (x - int(thickness/2), y + int(thickness/2)),
         (x + label_w, y + label_h),
         box_color,
         thickness=-1,
