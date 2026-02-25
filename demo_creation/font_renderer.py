@@ -104,7 +104,7 @@ def _draw_text_label(frame, text, track_id, position, font_size, box_color=None,
         (x + label_w - int(padding/2), y + label_h + int(label_padding/2)),
         box_color,
         thickness=-1,
-        radius=2
+        radius=1
     )
     frame = _draw_text(
         frame,
