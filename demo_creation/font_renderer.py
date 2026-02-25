@@ -107,7 +107,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     frame = draw_rounded_rectangle(
         frame,
         (x, y),
-        (x + label_w, y + label_h),
+        (x + label_w, y),
         box_color,
         thickness=-1,
         radius=5
