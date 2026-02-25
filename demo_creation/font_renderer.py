@@ -46,7 +46,8 @@ def _draw_text(frame, text, position, font_size, color, thickness=1):
         text_center_from_baseline = (text_top + text_bottom) / 2
         
         # Adjust y position: move up by the center offset from baseline
-        adjusted_y = y - text_center_from_baseline
+        # adjusted_y = y - text_center_from_baseline
+        adjusted_y = y 
         
         letter_spacing = max(1, int(font_size * letter_spacing_ratio))  # 12% of font size (1.5x bigger)
         
