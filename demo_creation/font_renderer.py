@@ -140,7 +140,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_th
 
         frame = draw_rounded_rectangle(
             frame,
-            (x1, y1 + int(padding)),
+            (x1, y1),
             (x2, y2),
             color=box_color,
             thickness=box_thickness,
