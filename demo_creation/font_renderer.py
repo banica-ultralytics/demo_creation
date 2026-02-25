@@ -97,7 +97,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     frame = draw_rounded_rectangle(
         frame,
         (x, y),
-        (x + label_w, y + label_h + int(label_padding/2)),
+        (x + label_w + int(label_padding/2), y + label_h + int(label_padding/2)),
         box_color,
         thickness=-1,
         radius=2
@@ -105,7 +105,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     frame = _draw_text(
         frame,
         text,
-        (x + int(padding), y + int(padding/2)),
+        (x + int(padding/2), y + int(padding/2)),
         font_size,
         text_color,
         thickness
@@ -114,7 +114,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     
     
     
-def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_thickness=2):
+def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_thickness=2, padding = label_padding):
     
     if colors is None:
         brand_color_pairs = get_color_pairs()
@@ -144,7 +144,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_th
             (x2, y2),
             color=box_color,
             thickness=box_thickness,
-            radius=4
+            radius=4,
         )
         frame = _draw_text_label(
                 frame,
@@ -153,6 +153,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_th
                 font_size=font_size,
                 box_color=box_color,
                 text_color=text_color,
+                padding = padding
             )
     return frame
 
