@@ -85,11 +85,15 @@ def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=2):
         
             
 # draw text and colored label 
-def _draw_text_label(frame, text, position, font_size, box_color=None, text_color=None, thickness=2, padding=label_padding):
+def _draw_text_label(frame, text, track_id, position, font_size, box_color=None, text_color=None, thickness=2, padding=label_padding):
     text_w, text_h = _get_text_size(text, font_size)
     frame_h, frame_w = frame.shape[:2]
     label_w = text_w + padding
     label_h = text_h + padding
+    
+    if track_id is not None:
+        text = f"{text}: {track_id}"
+    
 
     x = max(0, min(position[0], frame_w - label_w))
     y = max(0, min(position[1], frame_h - label_h))
@@ -114,8 +118,10 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     
     
     
-def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_thickness=2, padding = label_padding, radius = 2):
-    
+def draw_box_annotations(frame, boxes, labels, track_ids, colors=None, font_size=20, box_thickness=2, padding = label_padding, radius = 2, add_ids = False):
+    if not add_ids:
+        track_ids = [None] * len(labels)
+        
     if colors is None:
         brand_color_pairs = get_color_pairs()
         
@@ -124,7 +130,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_th
         for i, label in enumerate(class_labels):
             label_color_map[label] = brand_color_pairs[i % len(brand_color_pairs)]
     
-    for box, label in zip(boxes, labels):
+    for box, label, track_id in zip(boxes, labels, track_ids):
         x1, y1, x2, y2 = box
 
         if colors is None:
@@ -149,6 +155,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_th
         frame = _draw_text_label(
                 frame,
                 label,
+                track_id,
                 position=(x1, y1 - (text_box_height + padding + box_thickness)),  # position label above the box
                 font_size=font_size,
                 box_color=box_color,
