@@ -38,25 +38,13 @@ def _draw_text(frame, text, position, font_size, color, thickness=1):
         
         # Get text metrics for proper positioning
         x, y = position
-        bbox = font.getbbox(text)
-    
-    
-        text_top = bbox[1]      # Distance from baseline to top (usually negative)
-        text_bottom = bbox[3]   # Distance from baseline to bottom (usually positive)
-        text_center_from_baseline = (text_top + text_bottom) / 2
-        
-        # Adjust y position: move up by the center offset from baseline
-        # adjusted_y = y - text_center_from_baseline
-        adjusted_y = y 
-        
+
         letter_spacing = max(1, int(font_size * letter_spacing_ratio))  # 12% of font size (1.5x bigger)
         
-        # Draw text with letter spacing
-        current_x = x
         for char in text:
-            draw.text((current_x, adjusted_y), char, font=font, fill=rgb_color)
+            draw.text((x, y), char, font=font, fill=rgb_color)
             char_width = font.getbbox(char)[2] - font.getbbox(char)[0]
-            current_x += char_width + letter_spacing
+            x += char_width + letter_spacing
         
         # Convert back to OpenCV format
         frame_bgr = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
