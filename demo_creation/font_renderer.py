@@ -147,7 +147,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None):
         frame = _draw_text_label(
                 frame,
                 label,
-                position=(x1, y1),
+                position=(x1, y1 - (y2 - y1)),  # position label above the box
                 font_size=16,
                 box_color=box_color,
                 text_color=text_color,
