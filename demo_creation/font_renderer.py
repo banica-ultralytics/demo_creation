@@ -18,40 +18,30 @@ def _get_text_size(text, font_size):
         if i < len(text) - 1:
             total_width += letter_spacing
     
-    bbox = font.getbbox(text)
-    height = bbox[3] - bbox[1]
+    ascent, descent = font.getmetrics()
+    height = ascent + descent
     return (total_width, height)
 
 
 
 def _draw_text(frame, text, position, font_size, color, thickness=1):
-        """Draw text with Archivo font on OpenCV frame with improved spacing"""
-        font = get_font(font_size)
-        
-        # Convert OpenCV frame to PIL Image
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        pil_image = Image.fromarray(frame_rgb)
-        draw = ImageDraw.Draw(pil_image)
-        
-        # Convert BGR color to RGB
-        rgb_color = (color[2], color[1], color[0])  # BGR to RGB
-        
-        # Get text metrics for proper positioning
-        x, y = position
-
-        letter_spacing = max(1, int(font_size * letter_spacing_ratio))  # 12% of font size (1.5x bigger)
-        
-        for char in text:
-            draw.text((x, y), char, font=font, fill=rgb_color)
-            char_width = font.getbbox(char)[2] - font.getbbox(char)[0]
-            x += char_width + letter_spacing
-        
-        # Convert back to OpenCV format
-        frame_bgr = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
-        frame[:] = frame_bgr[:]
-        
-        return frame
+    font = get_font(font_size)
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    pil_image = Image.fromarray(frame_rgb)
+    draw = ImageDraw.Draw(pil_image)
+    rgb_color = (color[2], color[1], color[0])
     
+    x, y = position
+    letter_spacing = max(1, int(font_size * letter_spacing_ratio))
+    
+    for char in text:
+        draw.text((x, y), char, font=font, fill=rgb_color, anchor="lt")
+        char_width = font.getbbox(char)[2] - font.getbbox(char)[0]
+        x += char_width + letter_spacing
+    
+    frame_bgr = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+    frame[:] = frame_bgr[:]
+    return frame
     
     
 def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=2):
