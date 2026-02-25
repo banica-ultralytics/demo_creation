@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from .utils import get_font, get_color_pairs
 
-label_padding = 6
+label_padding = 4
 letter_spacing_ratio = 0.12  
 
 def _get_text_size(text, font_size):
