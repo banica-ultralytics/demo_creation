@@ -105,7 +105,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     frame = _draw_text(
         frame,
         text,
-        (x + int(padding/2), y ),
+        (x + int(padding/2), y - int(padding/2)),
         font_size,
         text_color,
         thickness
