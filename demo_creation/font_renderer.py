@@ -86,13 +86,13 @@ def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=2):
             
 # draw text and colored label 
 def _draw_text_label(frame, text, track_id, position, font_size, box_color=None, text_color=None, thickness=2, padding=label_padding):
+    if track_id is not None:
+        text = f"{text}: {track_id}"
+    
     text_w, text_h = _get_text_size(text, font_size)
     frame_h, frame_w = frame.shape[:2]
     label_w = text_w + padding
     label_h = text_h + padding
-    
-    if track_id is not None:
-        text = f"{text}: {track_id}"
     
 
     x = max(0, min(position[0], frame_w - label_w))
