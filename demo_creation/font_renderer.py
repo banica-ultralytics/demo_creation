@@ -54,7 +54,7 @@ def _draw_text(frame, text, position, font_size, color, thickness=1):
     
     
     
-def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=4):
+def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=2):
         x1, y1 = pt1
         x2, y2 = pt2
         
@@ -100,12 +100,12 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
         (x + label_w, y + label_h+ int(label_padding/2)),
         box_color,
         thickness=-1,
-        radius=5
+        radius=2
     )
     frame = _draw_text(
         frame,
         text,
-        (x + int(padding/2), y + int(padding/2)),
+        (x + int(padding), y + int(padding/2)),
         font_size,
         text_color,
         thickness
