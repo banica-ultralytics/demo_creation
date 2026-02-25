@@ -114,7 +114,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     
     
     
-def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_thickness=2, padding = label_padding):
+def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_thickness=2, padding = label_padding, radius = 2):
     
     if colors is None:
         brand_color_pairs = get_color_pairs()
@@ -144,7 +144,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_th
             (x2, y2),
             color=box_color,
             thickness=box_thickness,
-            radius=4,
+            radius=radius,
         )
         frame = _draw_text_label(
                 frame,
