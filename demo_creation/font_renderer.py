@@ -135,6 +135,8 @@ def draw_box_annotations(frame, boxes, labels, colors=None):
         else:
             box_color = colors[0]
             text_color = colors[1]
+            
+        text_box_height = _get_text_size(label, font_size=16)[1] + label_padding
 
         frame = draw_rounded_rectangle(
             frame,
@@ -147,7 +149,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None):
         frame = _draw_text_label(
                 frame,
                 label,
-                position=(x1, y1 - (y2 - y1)),  # position label above the box
+                position=(x1, y1 - text_box_height),  # position label above the box
                 font_size=16,
                 box_color=box_color,
                 text_color=text_color,
