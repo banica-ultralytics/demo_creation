@@ -4,11 +4,12 @@ from PIL import Image, ImageDraw
 from .utils import get_font, get_color_pairs
 
 label_padding = 6
+letter_spacing_ratio = 0.12  
 
 def _get_text_size(text, font_size):
     font = get_font(font_size)
     total_width = 0
-    letter_spacing = max(1, int(font_size * 0.12))
+    letter_spacing = max(1, int(font_size * letter_spacing_ratio))
     
     for i, char in enumerate(text):
         char_bbox = font.getbbox(char)
@@ -47,7 +48,7 @@ def _draw_text(frame, text, position, font_size, color, thickness=1):
         # Adjust y position: move up by the center offset from baseline
         adjusted_y = y - text_center_from_baseline
         
-        letter_spacing = max(1, int(font_size * 0.12))  # 12% of font size (1.5x bigger)
+        letter_spacing = max(1, int(font_size * letter_spacing_ratio))  # 12% of font size (1.5x bigger)
         
         # Draw text with letter spacing
         current_x = x
@@ -107,7 +108,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     frame = draw_rounded_rectangle(
         frame,
         (x, y),
-        (x + label_w, y),
+        (x + label_w, y + label_h),
         box_color,
         thickness=-1,
         radius=5
