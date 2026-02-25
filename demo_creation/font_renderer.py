@@ -88,8 +88,8 @@ def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=2):
 def _draw_text_label(frame, text, position, font_size, box_color=None, text_color=None, thickness=2, padding=label_padding):
     text_w, text_h = _get_text_size(text, font_size)
     frame_h, frame_w = frame.shape[:2]
-    label_w = text_w + padding
-    label_h = text_h + padding
+    label_w = text_w + int(padding/2)
+    label_h = text_h + int(padding/2)
 
     x = max(0, min(position[0], frame_w - label_w))
     y = max(0, min(position[1], frame_h - label_h))
