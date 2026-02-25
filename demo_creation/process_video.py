@@ -17,7 +17,7 @@ def input_video(path, writer_file_name='output.mp4'):
 
 
 def process_yolo_results_boundingbox(results):
-    boxes = results[0].boxes.xyxy.cpu().numpy().astype(int)
+    boxes = boxes = results[0].boxes.xyxy.cpu().numpy().astype(int).reshape(-1, 4)
     labels = [results[0].names[int(cls)] for cls in results[0].boxes.cls.cpu().numpy()]
     tracks = results[0].boxes.id.cpu().numpy().astype(int)
     
