@@ -16,7 +16,7 @@ def input_video(path, writer_file_name='output.mp4'):
     return cap, fps, width, height, out_writer
 
 
-def process_yolo_resutls_boundingbox(results):
+def process_yolo_results_boundingbox(results):
     boxes = results[0].boxes.xyxy.cpu().numpy().astype(int)
     labels = [results[0].names[int(cls)] for cls in results[0].boxes.cls.cpu().numpy()]
     tracks = results[0].boxes.id.cpu().numpy().astype(int)
