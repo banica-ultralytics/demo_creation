@@ -84,32 +84,35 @@ def draw_rounded_rectangle(img, pt1, pt2, color, thickness, radius=2):
             
         
             
-# draw text and colored label 
 def _draw_text_label(frame, text, track_id, position, font_size, box_color=None, text_color=None, thickness=2, padding=label_padding):
     if track_id is not None:
         text = f"{text}: {track_id}"
     
     text_w, text_h = _get_text_size(text, font_size)
     frame_h, frame_w = frame.shape[:2]
-    label_w = text_w + padding
-    label_h = text_h + padding
     
-
+    label_w = text_w + padding * 2
+    label_h = text_h + padding * 2
+    
+    # Clamp position to frame bounds
     x = max(0, min(position[0], frame_w - label_w))
-    y = max(0, min(position[1] + thickness, frame_h - label_h))
-
+    y = max(0, min(position[1], frame_h - label_h))
+    
+    # Draw background rectangle — fills the full label area
     frame = draw_rounded_rectangle(
         frame,
-        (x, y + int(padding/2) - int(font_size /10)),  # adjust y for better vertical alignment
-        (x + label_w - int(padding/2), y + label_h),
+        (x, y),
+        (x + label_w, y + label_h),
         box_color,
         thickness=-1,
         radius=1
     )
+    
+    # Draw text centered within the label
     frame = _draw_text(
         frame,
         text,
-        (x + int(padding/2), y - int(padding/2)),
+        (x + padding, y + padding),
         font_size,
         text_color,
         thickness
