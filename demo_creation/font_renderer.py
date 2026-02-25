@@ -33,12 +33,7 @@ def _draw_text(frame, text, position, font_size, color, thickness=1):
         draw = ImageDraw.Draw(pil_image)
         
         # Convert BGR color to RGB
-        if isinstance(color, tuple) and len(color) == 3:
-            print('IS BGR')
-            rgb_color = (color[2], color[1], color[0])  # BGR to RGB
-        else:
-            print('IS RGB')
-            rgb_color = color
+        rgb_color = (color[2], color[1], color[0])  # BGR to RGB
         
         # Get text metrics for proper positioning
         x, y = position
