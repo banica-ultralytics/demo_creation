@@ -100,8 +100,8 @@ def _draw_text_label(frame, text, track_id, position, font_size, box_color=None,
 
     frame = draw_rounded_rectangle(
         frame,
-        (x, y+ int(padding/2)),
-        (x + label_w - int(padding/2), y + label_h),
+        (x, y + int(padding/2) + int(font_size * 0.15)),  # adjust y to better align with text
+        (x + label_w - int(padding/2), y + label_h + int(font_size * 0.15)),
         box_color,
         thickness=-1,
         radius=1
