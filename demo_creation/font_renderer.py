@@ -6,21 +6,29 @@ from .utils import get_font, get_color_pairs
 label_padding = 4
 letter_spacing_ratio = 0.12  
 
-def _get_text_size(text, font_size):
+def _draw_text(frame, text, position, font_size, color, thickness=1):
     font = get_font(font_size)
-    total_width = 0
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    pil_image = Image.fromarray(frame_rgb)
+    draw = ImageDraw.Draw(pil_image)
+    rgb_color = (color[2], color[1], color[0])
+    
+    x, y = position
     letter_spacing = max(1, int(font_size * letter_spacing_ratio))
     
-    for i, char in enumerate(text):
-        char_bbox = font.getbbox(char)
-        char_width = char_bbox[2] - char_bbox[0]
-        total_width += char_width
-        if i < len(text) - 1:
-            total_width += letter_spacing
+    # Get the top offset from a reference string that covers full ascent
+    ref_bbox = font.getbbox("Ay")
+    top_offset = ref_bbox[1]  # consistent y offset for all characters
     
-    ascent, descent = font.getmetrics()
-    height = ascent + descent
-    return (total_width, height)
+    for char in text:
+        char_bbox = font.getbbox(char)
+        draw.text((x - char_bbox[0], y - top_offset), char, font=font, fill=rgb_color)
+        char_width = char_bbox[2] - char_bbox[0]
+        x += char_width + letter_spacing
+    
+    frame_bgr = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+    frame[:] = frame_bgr[:]
+    return frame
 
 
 
