@@ -18,8 +18,9 @@ def _get_text_size(text, font_size):
         if i < len(text) - 1:
             total_width += letter_spacing
     
-    ascent, descent = font.getmetrics()
-    height = ascent + descent
+    # Use same reference as _draw_text for consistent height
+    ref_bbox = font.getbbox("Ay")
+    height = ref_bbox[3] - ref_bbox[1]
     return (total_width, height)
 
 
