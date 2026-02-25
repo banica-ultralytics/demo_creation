@@ -105,7 +105,7 @@ def _draw_text_label(frame, text, position, font_size, box_color=None, text_colo
     frame = _draw_text(
         frame,
         text,
-        (x + int(padding), y + int(padding/2)),
+        (x + int(padding/2), y + int(padding/2)),
         font_size,
         text_color,
         thickness
@@ -149,7 +149,7 @@ def draw_box_annotations(frame, boxes, labels, colors=None, font_size=20, box_th
         frame = _draw_text_label(
                 frame,
                 label,
-                position=(x1 + int(label_padding/2), y1 - (text_box_height + label_padding + box_thickness)),  # position label above the box
+                position=(x1, y1 - (text_box_height + label_padding + box_thickness)),  # position label above the box
                 font_size=font_size,
                 box_color=box_color,
                 text_color=text_color,
