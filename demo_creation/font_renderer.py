@@ -94,10 +94,12 @@ def _draw_text_label(frame, text, track_id, position, font_size, box_color=None,
     x = max(0, min(position[0], frame_w - label_w))
     y = max(0, min(position[1], frame_h - label_h))
     
+    y += int(thickness / 2)  # adjust y to account for box thickness
+    
     # Draw background rectangle — fills the full label area
     frame = draw_rounded_rectangle(
         frame,
-        (x - int(thickness/2), y + int(thickness/2)),
+        (x - int(thickness/2), y),
         (x + label_w, y + label_h),
         box_color,
         thickness=-1,
