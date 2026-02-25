@@ -142,12 +142,12 @@ def draw_box_annotations(frame, boxes, labels, colors=None):
             (x2, y2),
             color=box_color,
             thickness=2,
-            radius=10
+            radius=4
         )
         frame = _draw_text_label(
                 frame,
                 label,
-                position=(x1, y1 - 25),
+                position=(x1, y1),
                 font_size=16,
                 box_color=box_color,
                 text_color=text_color,
