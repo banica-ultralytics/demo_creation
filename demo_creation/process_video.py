@@ -16,14 +16,47 @@ def input_video(path, writer_file_name='output.mp4'):
     return cap, fps, width, height, out_writer
 
 
-def process_yolo_results_boundingbox(results):
-    boxes = boxes = results[0].boxes.xyxy.cpu().numpy().astype(int).reshape(-1, 4)
-    labels = [results[0].names[int(cls)] for cls in results[0].boxes.cls.cpu().numpy()]
-    tracks = results[0].boxes.id.cpu().numpy().astype(int)
+def process_yolo_results(results):
+    result = results[0]
+    output = {}
+
+    if result.boxes is not None and len(result.boxes):
+        output['boxes'] = result.boxes.xyxy.cpu().numpy().astype(int).reshape(-1, 4)
+        output['labels'] = [result.names[int(cls)] for cls in result.boxes.cls.cpu().numpy()]
+        output['confidences'] = result.boxes.conf.cpu().numpy()
+
+        if result.boxes.id is not None:
+            output['track_ids'] = result.boxes.id.cpu().numpy().astype(int)
+        else:
+            output['track_ids'] = [None] * len(output['labels'])
     
-    return {
-            'boxes': boxes,
-            'labels': labels,
-            'track_ids': tracks
-    }
+    if result.masks is not None:
+        output['masks'] = result.masks.data.cpu().numpy()
+
+    if result.keypoints is not None:
+        output['keypoints'] = result.keypoints.data.cpu().numpy()
+
+    if result.obb is not None:
+        output['obbs'] = result.obb.xyxyxyxy.cpu().numpy()
+
+    return output
+    
+    
+def plot_boxes_from_folder(fpath, classes=None):
+    if not os.path.isdir(fpath):
+        raise NotADirectoryError(f"Provided path is not a directory: {fpath}")
+    
+    for file in os.listdir(fpath):
+        if file.endswith('.txt'):
+            with open(os.path.join(fpath, file), 'r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    parts = line.strip().split()
+                    if len(parts) < 5:
+                        continue
+                    cls_id, x_center, y_center, width, height = map(float, parts[:5])
+                    if classes and int(cls_id) >= len(classes):
+                        continue
+                    print(f"Class: {classes[int(cls_id)] if classes else cls_id}, Box: ({x_center}, {y_center}, {width}, {height})")
+    
 
