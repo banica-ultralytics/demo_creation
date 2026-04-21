@@ -91,8 +91,7 @@ def _round_frame_corners(frame, radius=35):
         return (frame.astype(np.float32) * mask_3ch).astype(np.uint8)
     
     
-def draw_dashboard(frame, data, x=100, y=100, radius=4):
-    font_size = 20
+def draw_dashboard(frame, data, x=100, y=100, radius=4, font_size=20):
     padding = 10
 
     lines = [(f"{name} : {val}", color) for color, entries in data.items() for name, val in entries.items()]

@@ -4,7 +4,30 @@ from PIL import Image, ImageDraw
 from .utils import get_font, get_color_pairs
 
 label_padding = 4
-letter_spacing_ratio = 0.12  
+letter_spacing_ratio = 0.12
+
+# persistent class-label -> (box_color, text_color) map, so a class keeps the
+# same color across every frame it appears in
+_label_color_map = {}
+
+
+def _contrast_text_color(box_color):
+    brightness = 0.299 * box_color[2] + 0.587 * box_color[1] + 0.114 * box_color[0]
+    return (104, 31, 17) if brightness > 186 else (255, 255, 255)
+
+
+def set_label_colors(mapping):
+    """Pre-assign colors to class labels. Values may be a BGR tuple or a
+    (box_color, text_color) pair; missing text colors are derived from brightness."""
+    for label, entry in mapping.items():
+        if isinstance(entry, tuple) and len(entry) == 2 and isinstance(entry[0], tuple):
+            _label_color_map[label] = entry
+        else:
+            _label_color_map[label] = (tuple(entry), _contrast_text_color(entry))
+
+
+def reset_label_colors():
+    _label_color_map.clear()
 
 def _get_text_size(text, font_size):
     font = get_font(font_size)
@@ -122,23 +145,24 @@ def _draw_text_label(frame, text, track_id, position, font_size, box_color=None,
 def draw_box_annotations(frame, boxes, labels, track_ids, colors=None, font_size=20, box_thickness=2, padding = label_padding, radius = 2, add_ids = False):
     if not add_ids:
         track_ids = [None] * len(labels)
-        
-    if colors is None:
-        brand_color_pairs = get_color_pairs()
-        
-        class_labels = list(set(labels))
-        label_color_map = {}
-        for i, label in enumerate(class_labels):
-            label_color_map[label] = brand_color_pairs[i % len(brand_color_pairs)]
-    
+
+    if isinstance(colors, dict):
+        set_label_colors(colors)
+        colors = None
+
+    brand_color_pairs = get_color_pairs() if colors is None else None
+
     for box, label, track_id in zip(boxes, labels, track_ids):
         x1, y1, x2, y2 = box
 
         if colors is None:
-            box_color, text_color = label_color_map[label]
+            if label not in _label_color_map:
+                idx = len(_label_color_map) % len(brand_color_pairs)
+                _label_color_map[label] = brand_color_pairs[idx]
+            box_color, text_color = _label_color_map[label]
         elif isinstance(colors, tuple):
             box_color = colors
-            text_color = (255, 255, 255) if (0.299 * colors[2] + 0.587 * colors[1] + 0.114 * colors[0]) < 186 else (104, 31, 17)
+            text_color = _contrast_text_color(colors)
         else:
             box_color = colors[0]
             text_color = colors[1]
