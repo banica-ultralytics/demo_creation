@@ -175,7 +175,7 @@ def draw_box_annotations(frame, boxes, labels, track_ids, colors=None, font_size
             (x2, y2),
             color=box_color,
             thickness=box_thickness,
-            radius=radius,
+            radius=1,
         )
         frame = _draw_text_label(
                 frame,
