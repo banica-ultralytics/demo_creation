@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from .utils import get_font, get_color_pairs
 
-label_padding = 0
+label_padding = 1
 letter_spacing_ratio = 0.12
 
 # persistent class-label -> (box_color, text_color) map, so a class keeps the
