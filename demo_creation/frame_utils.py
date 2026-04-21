@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from .font_renderer import draw_rounded_rectangle
+from .font_renderer import draw_rounded_rectangle, _get_text_size, _draw_text
 from . import utils
 
 
@@ -89,4 +89,28 @@ def _round_frame_corners(frame, radius=35):
         mask_3ch = mask_3ch.astype(np.float32) / 255.0
         
         return (frame.astype(np.float32) * mask_3ch).astype(np.uint8)
+    
+    
+def _draw_dashboard(frame, data, x=100, y=100, radius=4):
+    font_size = 20
+    padding = 10
+
+    lines = [(f"{name} : {val}", color) for color, entries in data.items() for name, val in entries.items()]
+    text_h = _get_text_size("Ay", font_size)[1]
+    max_w = max((_get_text_size(t, font_size)[0] for t, _ in lines), default=0)
+
+    w = max_w + padding * 2
+    h = (text_h + padding) * len(lines) + padding
+
+    overlay = frame.copy()
+    draw_rounded_rectangle(overlay, (x, y), (x + w, y + h), utils._brand_colors['pure-midnight'], -1, radius)
+    frame = cv2.addWeighted(overlay, 0.8, frame, 0.2, 0)
+
+    ty = y + padding
+    for text, color in lines:
+        _draw_text(frame, text, (x + padding, ty), font_size, color)
+        ty += text_h + padding
+
+    return frame
+
     
